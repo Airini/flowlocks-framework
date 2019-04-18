@@ -33,7 +33,7 @@ import Control.Applicative
 class (Eq point, Functor m, Applicative m, Monad m) =>
     PartialOrder m point where
   -- | Partial order operation
-    leq :: point -> point -> m Bool
+  leq :: point -> point -> m Bool
 
 
 -- | Class representing a join semi-lattice. We separate

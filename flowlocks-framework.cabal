@@ -1,5 +1,5 @@
 Name:                   flowlocks-framework
-Version:                0.1.1
+Version:                0.1.3.2
 License:                BSD3
 License-File:           LICENSE
 Author:                 Niklas Broberg
@@ -10,9 +10,16 @@ Description:            This library provides a generalized framework
                         for information flow policies built around the 
                         concept of Flow locks.
 Stability:              Experimental
-Tested-with:            GHC==7.0.2
+Tested-with:            GHC==7.0.2, GHC==8.6.*
 Build-Type:             Simple
 Cabal-Version:          >= 1.8
+
+Source-repository head
+  Type:                 git
+  Location:             https://github.com/niklasbroberg/flowlocks-framework
+
+
+Extra-source-files:     tests/Datalog.hs
 
 Library
   Build-Depends:        base >= 4 && < 6, syb, containers
@@ -34,7 +41,8 @@ Library
   Hs-source-dirs:       src
 
 Test-Suite test-flowlocks
-  type:            exitcode-stdio-1.0
-  hs-source-dirs:  tests
-  main-is:         TestAll.hs
-  build-depends:   base, flowlocks-framework, QuickCheck
+  type:                 exitcode-stdio-1.0
+  hs-source-dirs:       tests
+  main-is:              TestAll.hs
+  build-depends:        base, flowlocks-framework, QuickCheck
+  other-modules:        Datalog

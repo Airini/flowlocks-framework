@@ -73,7 +73,10 @@ instance (Eq name, ActorSet m actset aid, Show name) =>
           -- Collect all actorIds and actorSets used
           aIDs  = nub $ concatMap (\(Lock _ a) -> a) ls 
           asets = nub $ concatMap (\(DatalogClause as _ _) -> as) (p ++ q)
-      [pD,qD] <- mapM DatalogC.polToDatalog [p,q]
+      dProg <- mapM DatalogC.polToDatalog [p,q]
+      let [pD,qD] =
+              case dProg of
+                [a,b] -> [a, b]
       -- Add facts to the database linking each actorId to its actorset(s)
       sFacts <- DatalogC.addActsetFacts aIDs asets
       -- Add clauses representing subset relation between actorsets
@@ -111,8 +114,10 @@ instance (Eq name, Eq var, ActorSet m actset aid, Show name, Show var) =>
                      -- bound :: Policy name actset
                  bound <- topM -- WITH BOUNDS: maybe top id $ lookup i bs
                  bottom <- bottomM
-                 [[pb,pt],[qb,qt]] <-
-                         mapM (\y -> mapM (subi y) [bottom, bound]) [p,q]
+                 subPols <- mapM (\y -> mapM (subi y) [bottom, bound]) [p,q]
+                 let [[pb,pt],[qb,qt]] =
+                        case subPols of
+                          [[a,b],[c,d]] -> [[a,b],[c,d]]
                  ap1 <- lrt gpol ls pb qb
                  if ap1 then lrt gpol ls pt qt else return False
 
